@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Генериране на QR</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="mb-3"><a href="{% url 'main:index' %}" class="btn btn-outline-secondary">&larr; Назад към началото</a></div>
+
+        <h2>Генериране на нов билет (QR код)</h2>
+        <div class="card p-4 mt-4 shadow-sm">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="event_name" class="form-label">Име на събитието / артикула:</label>
+                    <input type="text" class="form-control" id="event_name" name="event_name" placeholder="Напр. Концерт 2024" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Генерирай QR Код</button>
+            </form>
+        </div>
+
+        {% if qr_image_data %}
+        <div class="card p-4 mt-4 text-center shadow-sm border-success">
+            <h4 class="text-success">Успешно създаден билет!</h4>
+            <p><strong>Код:</strong> {{ ticket_code }}</p>
+            <div>
+                <!-- Показваме генерираното изображение директно от паметта -->
+                <img src="data:image/png;base64,{{ qr_image_data }}" alt="QR Code" class="img-fluid border p-2 mb-3">
+            </div>
+            <p class="text-muted">Можеш да запазиш картинката (Десен бутон -> Save Image As...)</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
